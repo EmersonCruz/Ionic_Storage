@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
-
-
+import { AngularFireAuth } from "angularfire2/auth";
+import { HomePage } from '../home/home';
+import { ToastController } from 'ionic-angular';
 /**
  * Generated class for the LoginPage page.
  *
@@ -17,17 +18,31 @@ import { User } from '../../models/user';
 })
 export class LoginPage {
   user= {} as User;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public angularfireAuth:AngularFireAuth, public toast: ToastController) {
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
-
   register(){
     this.navCtrl.push('RegistrerPage');
   }
-  loginUser(){
-    
+async  loginUser(user: User){
+    try{
+      const result=this.angularfireAuth.auth.signInWithEmailAndPassword(user.email, user.password);
+      console.log(result);
+      if(result){
+        this.navCtrl.setRoot(HomePage);
+        console.log('Logueado');
+      }
+      else{
+        console.log('Error de usuario o contraseña');
+        this.toast.create({
+          message: 'Error de usuario o contraseña',
+          duration: 3000,
+
+        }).present();
+
+      }
+    }
+    catch(e){
+      console.error(e);
+    }
   }
 }
