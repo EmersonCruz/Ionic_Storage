@@ -22,7 +22,7 @@ constructor(public navCtrl: NavController, /*private storage: Storage,*/ public 
     this.angularfireAuth.authState.subscribe(data=>{
       if(data && data.email && data.uid){
         this.toast.create({
-          message: 'Bienvenido '+data.email,
+          message: 'Bienvenido '+ data.email,
           duration: 3000,
           position: 'top'
         }).present();
